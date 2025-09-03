@@ -14,7 +14,7 @@ router.get('/search', protect, async (req, res) => {
 
     const users = await User.find({
       $and: [
-        { _id: { $ne: req.user.id } }, // Exclude current user
+        { _id: { $ne: req.user.id } }, 
         {
           $or: [
             { name: { $regex: q, $options: 'i' } },

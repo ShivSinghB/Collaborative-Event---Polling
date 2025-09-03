@@ -12,7 +12,6 @@ const voteOnPoll = async (pollId, optionId, userId) => {
     throw new Error('Poll is closed');
   }
 
-  // Check if user is participant
   const event = await Event.findById(poll.event);
   const isParticipant = event.participants.some(
     p => p.user.toString() === userId && p.status === 'accepted'
@@ -22,7 +21,6 @@ const voteOnPoll = async (pollId, optionId, userId) => {
     throw new Error('Only event participants can vote');
   }
 
-  // Remove previous votes if not allowing multiple
   if (!poll.allowMultipleVotes) {
     poll.options.forEach(option => {
       option.votes = option.votes.filter(
@@ -31,7 +29,6 @@ const voteOnPoll = async (pollId, optionId, userId) => {
     });
   }
 
-  // Add new vote
   const optionIndex = poll.options.findIndex(opt => opt.id === optionId);
   if (optionIndex === -1) {
     throw new Error('Invalid option');
